@@ -560,3 +560,11 @@ body.workspace-sheling .brand-main,.brand-main[data-brand="sheling"]{font-size:1
  .settings-hero-card{flex-wrap:wrap}.settings-hero-card>.primary{width:100%}.toast{left:16px;right:16px;transform:translateY(20px);text-align:center}.toast.show{transform:translateY(0)}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none;animation:none;scroll-behavior:auto}}
+
+/* Package photos: keep the existing compact 2:1 cards. */
+.catalog-cover{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover}
+.service-image-help{display:block;font-size:14px;line-height:1.6;color:#625960;margin:8px 0 12px}
+.service-upload-preview{display:block;width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:10px;border:1px solid var(--line);margin:8px 0 14px}
+.service-upload-preview[hidden]{display:none}
+#serviceImageStatus{font-size:14px;line-height:1.5;color:#625960}
+#serviceImageFocus{width:100%;accent-color:var(--wine)}

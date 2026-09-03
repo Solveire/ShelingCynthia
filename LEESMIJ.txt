@@ -4,7 +4,7 @@ INSTALLEREN
 1. Maak in de huidige CRM via Bestanden > Exporteren een reservekopie.
 2. Vervang index.html, app.js en styles.css in dezelfde website/map als de huidige versie.
 3. Voeg proposals.js en proposals.css toe in diezelfde map.
-4. Laat de bestaande map assets met afbeeldingen staan; deze zit niet in dit pakket.
+4. Voeg de drie JPG-bestanden uit assets toe aan de bestaande map assets. Laat andere afbeeldingen staan.
 5. Herlaad de website. Zie je de oude versie, herlaad dan zonder cache.
 
 Dit pakket bouwt voort op de eerder geleverde Solveire-vormgeving.
@@ -50,3 +50,14 @@ JavaScript-syntax gecontroleerd.
 Voorstellen gecontroleerd op maken, klantkoppeling, herladen, scheiding van
 werkruimtes, btw-berekeningen, tekstescaping en afhandeling van mislukte opslag.
 Geen visuele browsertest, daadwerkelijke afdruktest of mailbezorgtest uitgevoerd.
+
+PAKKETFOTOS
+Content Essential: donkere foto met speelkaarten (links).
+Content Growth: foto met witte achtergrond (midden).
+Signature Agency: donkere foto met kaarsen en speelkaarten (rechts).
+De originele fotos zijn behouden; de software toont een brede uitsnede (2:1).
+Bij toevoegen of bewerken staat: aanbevolen 1200 x 600 pixels, JPG/PNG/WebP, max 2 MB.
+Met de schuifregelaar verschuif je de uitsnede; het voorbeeld werkt direct mee.
+Deze update zet de drie afbeeldingen eenmalig ook in de al opgeslagen LYNQ-catalogus.
+Later zelf gekozen afbeeldingen blijven bij herladen behouden. Trajectafbeeldingen zijn ongewijzigd.
+Alle bestanden moeten op de bestaande website geplaatst worden voordat anderen de update zien.

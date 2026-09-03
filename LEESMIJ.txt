@@ -1,0 +1,52 @@
+LYNQ Agency – Voorstellen
+
+INSTALLEREN
+1. Maak in de huidige CRM via Bestanden > Exporteren een reservekopie.
+2. Vervang index.html, app.js en styles.css in dezelfde website/map als de huidige versie.
+3. Voeg proposals.js en proposals.css toe in diezelfde map.
+4. Laat de bestaande map assets met afbeeldingen staan; deze zit niet in dit pakket.
+5. Herlaad de website. Zie je de oude versie, herlaad dan zonder cache.
+
+Dit pakket bouwt voort op de eerder geleverde Solveire-vormgeving.
+De live website is niet aangepast.
+De bestaande opslagsleutel is behouden. Verwijder geen browsergegevens.
+Gegevens verhuizen niet automatisch naar een andere browser, apparaat of domein.
+
+VOORSTELLEN
+Open LYNQ Agency > Voorstellen > Nieuw voorstel.
+Of open een klant > Voorstellen > Nieuw voorstel, voor ingevulde klantgegevens.
+Kies een bestaand pakket of voeg een vrije prijsregel toe.
+Bedragen zijn exclusief btw ingevoerd. De btw is aanpasbaar per regel.
+Eenmalige en maandelijkse bedragen worden afzonderlijk berekend.
+Bewerk introductie, werkzaamheden, looptijd/afspraken en afsluiting.
+Wijzigingen worden direct in deze browser opgeslagen en meegenomen in de bestaande JSON-export.
+Statussen Concept, Verzonden, Akkoord en Afgewezen worden handmatig beheerd.
+De editor en het voorbeeld scrollen op brede schermen afzonderlijk.
+Op kleinere schermen staat het voorbeeld onder de editor.
+
+PDF EN MAIL
+Afdrukken / PDF opent een afdrukvenster. Kies in je browser Bewaar als PDF.
+Mail voorbereiden toont de ontvanger en uitleg voordat je het mailprogramma opent.
+Open mailprogramma vult de ontvanger, het onderwerp en de voorsteltekst in.
+Controleer je zakelijke afzender, ontvanger en tekst vóór verzending.
+Een PDF wordt niet automatisch toegevoegd; voeg die zelf als bijlage toe.
+Bij lange teksten of wanneer geen mailprogramma opent: gebruik Mailtekst kopiëren.
+De status verandert nooit automatisch in Verzonden door het openen van een mail.
+
+NOG NODIG VOOR RECHTSTREEKS MAILEN VANUIT LYNQ
+Een zakelijke afzender, een mailproviderkoppeling en een beveiligde serverfunctie.
+Deze statische bestanden hebben geen server, accountlogin of mailproviderconfiguratie.
+Sla geen mailboxwachtwoorden of geheime mailsleutels op in deze bestanden.
+Er is geen automatische bezorg-, lees- of akkoordregistratie.
+
+AANBEVOLEN VERVOLG
+1. Centrale opslag en echte login, zodat Sheling op meerdere apparaten kan werken.
+2. Zakelijke mailkoppeling met betrouwbare verzendstatus en PDF-bijlage.
+3. Na akkoord een voorstel kunnen omzetten naar pakket, onboarding en taken.
+
+CONTROLE
+JavaScript-syntax gecontroleerd.
+45 bestaande schermfuncties uitgevoerd met een gesimuleerde DOM.
+Voorstellen gecontroleerd op maken, klantkoppeling, herladen, scheiding van
+werkruimtes, btw-berekeningen, tekstescaping en afhandeling van mislukte opslag.
+Geen visuele browsertest, daadwerkelijke afdruktest of mailbezorgtest uitgevoerd.

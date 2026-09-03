@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#151313">
+<title>LYNQ Agency CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=solveire-20260903">
+<link rel="stylesheet" href="proposals.css?v=20260903">
+</head>
+<body>
+<div id="app" class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-block">
+      <div class="brand-main" id="brandMain">LYNQ Agency</div>
+      <div class="brand-sub" id="brandSub"></div>
+    </div>
+    <div class="workspace-switcher">
+      <button id="workspaceButton" class="workspace-button">
+        <span class="workspace-dot"></span>
+        <span class="workspace-copy"><small>Werkruimte</small><strong id="workspaceLabel">LYNQ Agency</strong></span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div id="workspaceMenu" class="workspace-menu">
+        <button data-workspace="lynq"><span class="ws-mark wine"></span><span><strong>LYNQ Agency</strong><small>Agency & content</small></span></button>
+        <button data-workspace="sheling"><span class="ws-mark sand"></span><span><strong>ShelingCynthia</strong><small>Trajecten & coaching</small></span></button>
+      </div>
+    </div>
+    <nav id="nav" class="nav"></nav>
+    <div class="apps-entry"><span class="icon-grid">⋮⋮</span><span>Apps</span><span class="nav-arrow">›</span></div>
+    <div class="sidebar-spacer"></div>
+    <div class="profile-box">
+      <div class="profile-avatar">SC</div>
+      <div class="profile-copy"><strong>Sheling Cynthia</strong><small>Beheerder</small></div>
+      <span>⌄</span>
+    </div>
+  </aside>
+
+  <main class="main-shell">
+    <header class="topbar">
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Menu openen of sluiten" aria-controls="sidebar">☰</button>
+      <div class="global-search"><span class="search-icon">⌕</span><input aria-label="Zoek klanten of diensten" id="globalSearch" placeholder="Zoek klanten of diensten..."><span class="kbd">⌘ K</span></div>
+      <div class="topbar-actions">
+        <button class="icon-plain" id="appGrid" title="Apps">⋮⋮</button>
+        <div class="topbar-account">
+          <button class="topbar-link" id="exportData">Gegevens</button>
+          <button class="topbar-link" id="logoutBtn">Uitloggen</button>
+        </div>
+        <button class="primary top-add" id="topAdd">+ Nieuwe klant</button>
+      </div>
+      <span id="saveStatus" hidden>Opgeslagen</span>
+    </header>
+    <div class="main-scroll" id="mainScroll"><div id="content"></div></div>
+  </main>
+</div>
+<div class="screen-overlay" id="screenOverlay"></div>
+<aside class="drawer" id="drawer"></aside>
+<div class="modal-layer" id="modalLayer"><div class="modal-card" id="modalCard"></div></div>
+<div class="toast" id="toast"></div>
+<input id="importFile" type="file" accept="application/json" hidden>
+<script src="proposals.js?v=20260903"></script>
+<script src="app.js?v=proposals-20260903"></script>
+</body>
+</html>

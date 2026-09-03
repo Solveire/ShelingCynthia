@@ -26,9 +26,9 @@ const defaultData={
   },
   sheling:{
     services:[
-      {id:'tr1',name:'1:1 Mentoring',description:'Persoonlijk begeleidingstraject.',price:1500,billing:'once',image:'assets/website-service.jpg',active:true},
-      {id:'tr2',name:'Business Mentoring',description:'Intensief traject voor ondernemers.',price:2400,billing:'once',image:'assets/webshop-service.jpg',active:true},
-      {id:'tr3',name:'VIP Traject',description:'Premium begeleiding met extra contactmomenten.',price:3000,billing:'once',image:'assets/website-service.jpg',active:true}
+      {id:'tr1',name:'1:1 Mentoring',description:'Persoonlijk begeleidingstraject.',price:1500,billing:'once',image:'assets/lynq-essential.jpg',imagePosition:22,active:true},
+      {id:'tr2',name:'Business Mentoring',description:'Intensief traject voor ondernemers.',price:2400,billing:'once',image:'assets/lynq-growth.jpg',imagePosition:20,active:true},
+      {id:'tr3',name:'VIP Traject',description:'Premium begeleiding met extra contactmomenten.',price:3000,billing:'once',image:'assets/lynq-signature.jpg',imagePosition:14,active:true}
     ],
     clients:[
       {id:'s1',company:'Lisa van Dijk',contact:'Lisa van Dijk',email:'lisa@example.nl',phone:'06 1188 3344',status:'Actief',start:'2026-06-15',end:'2026-09-15',pause:'',resume:'',serviceLinks:[{serviceId:'tr1',rate:1500,status:'active',started:'2026-06-15'}],notes:[{id:'sn1',date:'2026-09-01',text:'Afrondcall inplannen.'}],tasks:[{id:'st1',title:'Afrondcall plannen',date:'2026-09-10',status:'open',serviceId:'tr1'}],appointments:[],installments:[{id:'i1',nr:1,amount:500,due:'2026-06-15',status:'paid'},{id:'i2',nr:2,amount:500,due:'2026-07-15',status:'paid'},{id:'i3',nr:3,amount:500,due:'2026-09-15',status:'open'}]},
@@ -364,7 +364,7 @@ function exportJSON(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'a
 function importJSON(file){const r=new FileReader();r.onload=()=>{try{const parsed=JSON.parse(r.result);if(!parsed.lynq||!parsed.sheling)throw Error();data=parsed;saveData('Import voltooid');toast('Data geïmporteerd');render()}catch{toast('Ongeldig importbestand')}};r.readAsText(file)}
 function render(){if(state.page==='content')state.page='clients';let html='';if(state.page==='client')html=clientDetail();else html=({dashboard,clients,services,installments,tasks,files:filesPage,finance,settings,proposals}[state.page]||dashboard)();$('#content').innerHTML=html;if(typeof proposalBind==='function')proposalBind();if(state.page==='clients'){renderClientTable();['clientSearch','clientStatus','clientService','clientStart','clientEnd','clientEnding','clientPosts','clientPayment'].forEach(id=>{const el=$('#'+id);if(el)el.addEventListener(id==='clientSearch'?'input':'change',renderClientTable)});$$('.saved-filter[data-quick]').forEach(b=>b.onclick=()=>{$$('.saved-filter[data-quick]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderClientTable()})}if(state.page==='installments'){renderPayments();$$('[data-payfilter]').forEach(b=>b.onclick=()=>{$$('[data-payfilter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPayments()})}}
 $('#workspaceButton').onclick=()=>$('#workspaceMenu').classList.toggle('open');$$('#workspaceMenu button').forEach(b=>b.onclick=()=>{state.workspace=b.dataset.workspace;state.page='dashboard';state.clientId=null;$('#workspaceMenu').classList.remove('open');renderNav();render();saveData('Werkruimte gewisseld')});$('#topAdd').onclick=openNewClient;$('#mobileToggle').onclick=()=>$('#sidebar').classList.toggle('open');$('#screenOverlay').onclick=closeDrawer;$('#modalLayer').onclick=e=>{if(e.target===$('#modalLayer'))closeModal()};$('#exportData').onclick=()=>go('files');$('#logoutBtn').onclick=()=>toast('Login wordt aangesloten bij de backend');$('#appGrid').onclick=openApps;document.querySelector('.apps-entry')?.addEventListener('click',openApps);$('#globalSearch').oninput=e=>{const q=e.target.value.trim().toLowerCase();if(q.length<3)return;const c=workspace().clients.find(c=>c.company.toLowerCase().includes(q)||c.email.toLowerCase().includes(q));if(c)openClient(c.id)};$('#importFile').onchange=e=>e.target.files[0]&&importJSON(e.target.files[0]);document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#globalSearch').focus()}});
-applyPackagePhotos();loadBrandColor();renderNav();render();saveData('Opgeslagen');
+applyPackagePhotos();applyShelingPhotos();loadBrandColor();renderNav();render();saveData('Opgeslagen');
 
 // One-time update also reaches browsers that already saved the old catalogue.
 function applyPackagePhotos(){
@@ -374,3 +374,10 @@ function applyPackagePhotos(){
  data.lynq.packagePhotosVersion=1;
 }
 function serviceImagePosition(service){return Math.max(0,Math.min(100,Number(service?.imagePosition??25)||0))}
+
+function applyShelingPhotos(){
+ if(data.sheling.packagePhotosVersion===1)return;
+ const photos={tr1:['assets/lynq-essential.jpg',22],tr2:['assets/lynq-growth.jpg',20],tr3:['assets/lynq-signature.jpg',14]};
+ for(const service of data.sheling.services){const photo=photos[service.id];if(photo){service.image=photo[0];service.imagePosition=photo[1]}}
+ data.sheling.packagePhotosVersion=1;
+}

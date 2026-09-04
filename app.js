@@ -41,22 +41,44 @@ function resetBrandColor(){applyBrandColor(DEFAULT_ACCENT,true);const input=$('#
 const defaultData={
   lynq:{
     services:[
-      {id:'svc1',name:'Content Essential',description:'Consistente social content voor een sterke basis.',price:495,billing:'monthly',posts:8,image:'assets/lynq-essential.svg',imagePosition:22,active:true},
-      {id:'svc2',name:'Content Growth',description:'Strategische content en meer zichtbaarheid per maand.',price:795,billing:'monthly',posts:12,image:'assets/lynq-growth.svg',imagePosition:20,active:true},
-      {id:'svc3',name:'Signature Agency',description:'Volledige contentregie en intensieve ondersteuning.',price:1295,billing:'monthly',posts:20,image:'assets/lynq-signature.svg',imagePosition:14,active:true}
+      {id:'svc1',name:'Content Essential',description:'Consistente social content voor een sterke basis.',price:495,billing:'monthly',posts:8,image:'assets/lynq-essential.jpg',imagePosition:22,active:true},
+      {id:'svc2',name:'Content Growth',description:'Strategische content en meer zichtbaarheid per maand.',price:795,billing:'monthly',posts:12,image:'assets/lynq-growth.jpg',imagePosition:20,active:true},
+      {id:'svc3',name:'Signature Agency',description:'Volledige contentregie en intensieve ondersteuning.',price:1295,billing:'monthly',posts:20,image:'assets/lynq-signature.jpg',imagePosition:14,active:true}
     ],
     clients:[]
   },
   sheling:{
     services:[
-      {id:'tr1',name:'1:1 Mentoring',description:'Persoonlijk begeleidingstraject.',price:1500,billing:'once',image:'assets/lynq-essential.svg',imagePosition:22,active:true},
-      {id:'tr2',name:'Business Mentoring',description:'Intensief traject voor ondernemers.',price:2400,billing:'once',image:'assets/lynq-growth.svg',imagePosition:20,active:true},
-      {id:'tr3',name:'VIP Traject',description:'Premium begeleiding met extra contactmomenten.',price:3000,billing:'once',image:'assets/lynq-signature.svg',imagePosition:14,active:true}
+      {id:'tr1',name:'1:1 Mentoring',description:'Persoonlijk begeleidingstraject.',price:1500,billing:'once',image:'assets/lynq-essential.jpg',imagePosition:22,active:true},
+      {id:'tr2',name:'Business Mentoring',description:'Intensief traject voor ondernemers.',price:2400,billing:'once',image:'assets/lynq-growth.jpg',imagePosition:20,active:true},
+      {id:'tr3',name:'VIP Traject',description:'Premium begeleiding met extra contactmomenten.',price:3000,billing:'once',image:'assets/lynq-signature.jpg',imagePosition:14,active:true}
     ],
     clients:[]
   }
 };
 let data=loadData();
+
+function migratePackageImages(){
+  const map={
+    'assets/lynq-essential.svg':'assets/lynq-essential.jpg',
+    'assets/lynq-growth.svg':'assets/lynq-growth.jpg',
+    'assets/lynq-signature.svg':'assets/lynq-signature.jpg'
+  };
+  let changed=false;
+  Object.values(data||{}).forEach(w=>{
+    (w.services||[]).forEach(s=>{
+      if(map[s.image]){s.image=map[s.image];changed=true}
+    });
+    (w.clients||[]).forEach(c=>{
+      (c.serviceLinks||[]).forEach(l=>{
+        if(map[l.image]){l.image=map[l.image];changed=true}
+      });
+    });
+  });
+  if(changed)localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+
+migratePackageImages();
 let state={workspace:'lynq',page:'dashboard',clientId:null,tab:'overview',taskFilter:'open',contentFilter:'all',settingsTab:'brand',financeFilter:'open',contentView:'list',contentMonth:new Date().toISOString().slice(0,7)};
 function stripDemoClients(source){
   if(!source||typeof source!=='object')return source;
@@ -493,7 +515,7 @@ applyPackagePhotos();applyShelingPhotos();loadBrandColor();renderNav();render();
 // One-time update also reaches browsers that already saved the old catalogue.
 function applyPackagePhotos(){
  if(data.lynq.packagePhotosVersion===1)return;
- const photos={svc1:['assets/lynq-essential.svg',22],svc2:['assets/lynq-growth.svg',20],svc3:['assets/lynq-signature.svg',14]};
+ const photos={svc1:['assets/lynq-essential.jpg',22],svc2:['assets/lynq-growth.jpg',20],svc3:['assets/lynq-signature.jpg',14]};
  for(const service of data.lynq.services){const photo=photos[service.id];if(photo){service.image=photo[0];service.imagePosition=photo[1]}}
  data.lynq.packagePhotosVersion=1;
 }
@@ -501,7 +523,7 @@ function serviceImagePosition(service){return Math.max(0,Math.min(100,Number(ser
 
 function applyShelingPhotos(){
  if(data.sheling.packagePhotosVersion===1)return;
- const photos={tr1:['assets/lynq-essential.svg',22],tr2:['assets/lynq-growth.svg',20],tr3:['assets/lynq-signature.svg',14]};
+ const photos={tr1:['assets/lynq-essential.jpg',22],tr2:['assets/lynq-growth.jpg',20],tr3:['assets/lynq-signature.jpg',14]};
  for(const service of data.sheling.services){const photo=photos[service.id];if(photo){service.image=photo[0];service.imagePosition=photo[1]}}
  data.sheling.packagePhotosVersion=1;
 }

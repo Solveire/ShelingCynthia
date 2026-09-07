@@ -9,7 +9,23 @@
 
   function token(){ return localStorage.getItem(TOKEN_KEY) || ''; }
   function setStatus(text){ const el=document.querySelector('#saveStatus'); if(el){el.hidden=false;el.textContent=text;} }
-  function snapshot(){ return {lynq: structuredClone(data.lynq), sheling: structuredClone(data.sheling)}; }
+  function currentTheme(){
+    return {
+      primary: localStorage.getItem(THEME_KEY) || DEFAULT_ACCENT,
+      secondary: localStorage.getItem(SUBTHEME_KEY) || DEFAULT_SUB_ACCENT
+    };
+  }
+  function applyRemoteTheme(theme){
+    if(!theme || typeof theme!=='object') return;
+    if(theme.primary && typeof applyBrandColor==='function') applyBrandColor(theme.primary,true);
+    if(theme.secondary && typeof applySubColor==='function') applySubColor(theme.secondary,true);
+  }
+  function snapshot(){
+    const lynq=structuredClone(data.lynq);
+    const sheling=structuredClone(data.sheling);
+    lynq._appTheme=currentTheme();
+    return {lynq, sheling};
+  }
   function meaningfulWorkspace(w){
     if(!w || typeof w!=='object') return false;
     return (Array.isArray(w.clients)&&w.clients.length>0) || (Array.isArray(w.services)&&w.services.length>0) || Object.keys(w).some(k=>!['clients','services'].includes(k));
@@ -67,6 +83,7 @@
       if(remoteHasData){
         if(remote.lynq?.data && Object.keys(remote.lynq.data).length) data.lynq=remote.lynq.data;
         if(remote.sheling?.data && Object.keys(remote.sheling.data).length) data.sheling=remote.sheling.data;
+        applyRemoteTheme(remote?.lynq?.data?._appTheme);
         localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
         if(typeof migratePackageImages==='function') migratePackageImages();
         if(typeof ensureWorkspaceExtras==='function') ensureWorkspaceExtras();
@@ -95,10 +112,24 @@
     schedulePush();
   };
 
+  const originalApplyBrandColor = applyBrandColor;
+  applyBrandColor = function(hex,save=true){
+    const ok=originalApplyBrandColor(hex,save);
+    if(ok && save) schedulePush(250);
+    return ok;
+  };
+
+  const originalApplySubColor = applySubColor;
+  applySubColor = function(hex,save=true){
+    const ok=originalApplySubColor(hex,save);
+    if(ok && save) schedulePush(250);
+    return ok;
+  };
+
   window.LynqBackend={
     sync:pushNow,
     clearToken(){localStorage.removeItem(TOKEN_KEY)},
-    status:()=>({api:API_BASE,tokenConfigured:!!token()})
+    status:()=>({api:API_BASE,tokenConfigured:!!token(),theme:currentTheme()})
   };
 
   firstLoad();

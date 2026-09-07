@@ -108,11 +108,19 @@
       <div class="client-file-type">${fileBadge(file.file_name)}</div>
       <div class="client-file-copy"><strong title="${esc(file.file_name)}">${esc(file.file_name)}</strong><small>${esc(file.category || 'Overig')} · ${bytesLabel(file.size_bytes)} · ${dateLabel(file.created_at)}</small></div>
       <div class="client-file-actions">
-        ${PREVIEWABLE.has(file.content_type) ? `<button class="ghost" type="button" onclick="window.ClientFiles.open('${esc(file.id)}','${esc(file.file_name)}','${esc(file.content_type)}')">Openen</button>` : ''}
-        <button class="outline" type="button" onclick="window.ClientFiles.download('${esc(file.id)}','${esc(file.file_name)}')">Download</button>
-        <button class="ghost client-file-delete" type="button" onclick="window.ClientFiles.remove('${esc(file.id)}','${esc(file.file_name)}')">Verwijder</button>
+        ${PREVIEWABLE.has(file.content_type) ? `<button class="ghost" type="button" data-client-file-action="open" data-file-id="${esc(file.id)}" data-file-name="${esc(file.file_name)}" data-file-type="${esc(file.content_type)}">Openen</button>` : ''}
+        <button class="outline" type="button" data-client-file-action="download" data-file-id="${esc(file.id)}" data-file-name="${esc(file.file_name)}">Download</button>
+        <button class="ghost client-file-delete" type="button" data-client-file-action="remove" data-file-id="${esc(file.id)}" data-file-name="${esc(file.file_name)}">Verwijder</button>
       </div>
     </div>`).join('');
+    list.querySelectorAll('[data-client-file-action]').forEach(button => {
+      button.addEventListener('click', () => {
+        const action = button.dataset.clientFileAction;
+        if (action === 'open') openFile(button.dataset.fileId, button.dataset.fileName, button.dataset.fileType);
+        if (action === 'download') downloadFile(button.dataset.fileId, button.dataset.fileName);
+        if (action === 'remove') removeFile(button.dataset.fileId, button.dataset.fileName);
+      });
+    });
   }
 
   async function uploadFiles(fileList) {

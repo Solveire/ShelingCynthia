@@ -20,6 +20,17 @@
       : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.4-5 9-5 9 5 9 5-3.4 5-9 5-9-5-9-5Z"/><circle cx="12" cy="12" r="2.5"/></svg>';
   }
 
+  function wireEye(button,input){
+    button.addEventListener('click',()=>{
+      const show=input.type==='password';
+      input.type=show?'text':'password';
+      button.innerHTML=eyeIcon(show);
+      button.setAttribute('aria-label',show?'Wachtwoord verbergen':'Wachtwoord tonen');
+      button.setAttribute('title',show?'Wachtwoord verbergen':'Wachtwoord tonen');
+      input.focus();
+    });
+  }
+
   function ensureOverlay(){
     let overlay=document.getElementById('authOverlay');
     if(overlay) return overlay;
@@ -36,7 +47,7 @@
           </div>
           <div class="auth-visual-copy">
             <span class="auth-eyebrow">LYNQ Agency</span>
-            <h2>Alles wat je nodig hebt.<br>Op één rustige plek.</h2>
+            <h2><span>Alles wat je nodig hebt.</span><span>Op één rustige plek.</span></h2>
             <p>Klanten, trajecten, content en planning overzichtelijk bij elkaar.</p>
           </div>
           <div class="auth-visual-meta"><span></span> Private workspace</div>
@@ -81,21 +92,13 @@
     document.body.appendChild(overlay);
 
     const passwordInput=overlay.querySelector('#authPassword');
-    const eyeButton=overlay.querySelector('#authEye');
-    eyeButton.addEventListener('click',()=>{
-      const show=passwordInput.type==='password';
-      passwordInput.type=show?'text':'password';
-      eyeButton.innerHTML=eyeIcon(show);
-      eyeButton.setAttribute('aria-label',show?'Wachtwoord verbergen':'Wachtwoord tonen');
-      eyeButton.setAttribute('title',show?'Wachtwoord verbergen':'Wachtwoord tonen');
-      passwordInput.focus();
-    });
+    wireEye(overlay.querySelector('#authEye'),passwordInput);
 
     overlay.querySelector('#authForgot').addEventListener('click',()=>{
       const error=overlay.querySelector('#authError');
       const info=overlay.querySelector('#authInfo');
       error.hidden=true;
-      info.textContent='Wachtwoord opnieuw instellen? Neem voorlopig contact op met de beheerder. De e-mailreset wordt in een volgende stap gekoppeld.';
+      info.textContent='Wachtwoord vergeten? Neem voorlopig contact op met de beheerder. Automatisch resetten per e-mail koppelen we apart.';
       info.hidden=false;
     });
 
@@ -133,6 +136,86 @@
     return overlay;
   }
 
+  function ensureAccountModal(){
+    let layer=document.getElementById('accountSecurityLayer');
+    if(layer) return layer;
+    layer=document.createElement('div');
+    layer.id='accountSecurityLayer';
+    layer.className='account-security-layer';
+    layer.innerHTML=`
+      <div class="account-security-card" role="dialog" aria-modal="true" aria-labelledby="accountSecurityTitle">
+        <button class="account-security-close" type="button" aria-label="Sluiten">×</button>
+        <div class="account-security-kicker">Account & beveiliging</div>
+        <h2 id="accountSecurityTitle">Wachtwoord wijzigen</h2>
+        <p class="account-security-intro">Wijzig hier veilig het wachtwoord waarmee je inlogt op je workspace.</p>
+        <div class="account-security-email"><span>E-mailadres</span><strong>shelingbusiness@gmail.com</strong></div>
+        <form id="changePasswordForm" class="account-security-form" novalidate>
+          <label><span>Huidig wachtwoord</span><div class="auth-password-wrap"><input id="currentPassword" type="password" autocomplete="current-password" required><button class="auth-eye" type="button" aria-label="Wachtwoord tonen">${eyeIcon(false)}</button></div></label>
+          <label><span>Nieuw wachtwoord</span><div class="auth-password-wrap"><input id="newPassword" type="password" autocomplete="new-password" minlength="10" required><button class="auth-eye" type="button" aria-label="Wachtwoord tonen">${eyeIcon(false)}</button></div><small>Minimaal 10 tekens.</small></label>
+          <label><span>Herhaal nieuw wachtwoord</span><div class="auth-password-wrap"><input id="confirmPassword" type="password" autocomplete="new-password" minlength="10" required><button class="auth-eye" type="button" aria-label="Wachtwoord tonen">${eyeIcon(false)}</button></div></label>
+          <div id="changePasswordError" class="auth-error" hidden></div>
+          <div id="changePasswordSuccess" class="account-security-success" hidden></div>
+          <button id="changePasswordSubmit" class="auth-submit" type="submit"><span>Wachtwoord opslaan</span><b>→</b></button>
+        </form>
+      </div>`;
+    document.body.appendChild(layer);
+
+    layer.querySelectorAll('.auth-password-wrap').forEach(wrap=>wireEye(wrap.querySelector('.auth-eye'),wrap.querySelector('input')));
+    layer.querySelector('.account-security-close').addEventListener('click',hideAccountSecurity);
+    layer.addEventListener('click',e=>{if(e.target===layer)hideAccountSecurity()});
+    layer.querySelector('#changePasswordForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      const currentPassword=layer.querySelector('#currentPassword').value;
+      const newPassword=layer.querySelector('#newPassword').value;
+      const confirmPassword=layer.querySelector('#confirmPassword').value;
+      const error=layer.querySelector('#changePasswordError');
+      const success=layer.querySelector('#changePasswordSuccess');
+      const submit=layer.querySelector('#changePasswordSubmit');
+      error.hidden=true;
+      success.hidden=true;
+      if(newPassword!==confirmPassword){
+        error.textContent='De nieuwe wachtwoorden zijn niet hetzelfde.';
+        error.hidden=false;
+        return;
+      }
+      submit.disabled=true;
+      submit.querySelector('span').textContent='Opslaan…';
+      try{
+        const res=await fetch(`${API_BASE}/auth/change-password`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json',Authorization:`Bearer ${getToken()}`},
+          body:JSON.stringify({currentPassword,newPassword})
+        });
+        const payload=await res.json().catch(()=>({}));
+        if(!res.ok) throw new Error(payload.error||'Wachtwoord wijzigen is niet gelukt.');
+        success.textContent='Wachtwoord gewijzigd. Vanaf nu log je in met je nieuwe wachtwoord.';
+        success.hidden=false;
+        layer.querySelector('#currentPassword').value='';
+        layer.querySelector('#newPassword').value='';
+        layer.querySelector('#confirmPassword').value='';
+      }catch(err){
+        error.textContent=err.message||'Wachtwoord wijzigen is niet gelukt.';
+        error.hidden=false;
+      }finally{
+        submit.disabled=false;
+        submit.querySelector('span').textContent='Wachtwoord opslaan';
+      }
+    });
+    return layer;
+  }
+
+  function showAccountSecurity(){
+    if(!getToken()) return showLogin();
+    const layer=ensureAccountModal();
+    layer.classList.add('is-visible');
+    document.body.classList.add('account-security-open');
+    setTimeout(()=>layer.querySelector('#currentPassword')?.focus(),60);
+  }
+  function hideAccountSecurity(){
+    document.getElementById('accountSecurityLayer')?.classList.remove('is-visible');
+    document.body.classList.remove('account-security-open');
+  }
+
   function showLogin(){
     const overlay=ensureOverlay();
     overlay.classList.add('is-visible');
@@ -145,6 +228,7 @@
   }
   function logout(){
     clearSession();
+    hideAccountSecurity();
     showLogin();
   }
 
@@ -170,11 +254,23 @@
 
   document.addEventListener('click',e=>{
     const logoutButton=e.target.closest('#logoutBtn');
-    if(!logoutButton) return;
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    logout();
+    if(logoutButton){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      logout();
+      return;
+    }
+    const profile=e.target.closest('.profile-box');
+    if(profile && getToken() && !document.getElementById('authOverlay')?.classList.contains('is-visible')){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      showAccountSecurity();
+    }
   },true);
+
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape') hideAccountSecurity();
+  });
 
   window.ShelingAuth={
     getToken,
@@ -182,6 +278,8 @@
     logout,
     showLogin,
     hideLogin,
+    showAccountSecurity,
+    hideAccountSecurity,
     validate:validateExistingSession
   };
 

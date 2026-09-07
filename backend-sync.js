@@ -1,13 +1,14 @@
 (() => {
   const API_BASE = 'https://shelingcynthia-api-production.up.railway.app';
-  const TOKEN_KEY = 'lynq-backend-token-v1';
   const MIGRATION_KEY = 'lynq-backend-first-sync-v1';
+  const LEGACY_TOKEN_KEY = 'lynq-backend-token-v1';
   let syncTimer = null;
   let syncing = false;
   let pending = false;
-  let tokenPrompted = false;
 
-  function token(){ return localStorage.getItem(TOKEN_KEY) || ''; }
+  function token(){
+    return window.ShelingAuth?.getToken?.() || localStorage.getItem(LEGACY_TOKEN_KEY) || '';
+  }
   function setStatus(text){ const el=document.querySelector('#saveStatus'); if(el){el.hidden=false;el.textContent=text;} }
   function currentTheme(){
     return {
@@ -34,15 +35,14 @@
   async function api(path, options={}){
     const headers = {...(options.headers||{}), 'Content-Type':'application/json'};
     if(token()) headers.Authorization = `Bearer ${token()}`;
-    let res = await fetch(API_BASE+path, {...options, headers});
-    if(res.status===401 && !tokenPrompted){
-      tokenPrompted=true;
-      const value=prompt('Voer de beveiligingscode voor de LYNQ/Sheling database in:');
-      if(value){
-        localStorage.setItem(TOKEN_KEY,value.trim());
-        headers.Authorization=`Bearer ${value.trim()}`;
-        res=await fetch(API_BASE+path,{...options,headers});
+    const res = await fetch(API_BASE+path, {...options, headers});
+    if(res.status===401){
+      if(window.ShelingAuth){
+        localStorage.removeItem('sheling-session-v1');
+        localStorage.removeItem('sheling-user-v1');
+        window.ShelingAuth.showLogin();
       }
+      throw new Error('Sessie verlopen');
     }
     if(!res.ok){
       const message=await res.text().catch(()=>res.statusText);
@@ -53,6 +53,7 @@
   }
 
   async function pushNow(){
+    if(!token()) return;
     if(syncing){pending=true;return}
     syncing=true;pending=false;
     try{
@@ -74,6 +75,7 @@
   }
 
   async function firstLoad(){
+    if(!token()) return;
     try{
       setStatus('Database verbinden…');
       const remote=await api('/api/state',{method:'GET'});
@@ -102,7 +104,7 @@
       }
     }catch(err){
       console.error('Backend initial load failed',err);
-      setStatus('Offline modus · lokaal opgeslagen');
+      if(token()) setStatus('Offline modus · lokaal opgeslagen');
     }
   }
 
@@ -128,9 +130,15 @@
 
   window.LynqBackend={
     sync:pushNow,
-    clearToken(){localStorage.removeItem(TOKEN_KEY)},
-    status:()=>({api:API_BASE,tokenConfigured:!!token(),theme:currentTheme()})
+    reload:firstLoad,
+    clearLegacyToken(){localStorage.removeItem(LEGACY_TOKEN_KEY)},
+    status:()=>({api:API_BASE,authenticated:!!window.ShelingAuth?.getToken?.(),theme:currentTheme()})
   };
 
-  firstLoad();
+  window.addEventListener('sheling-auth-ready',()=>{
+    localStorage.removeItem(LEGACY_TOKEN_KEY);
+    firstLoad();
+  });
+
+  if(token()) firstLoad();
 })();

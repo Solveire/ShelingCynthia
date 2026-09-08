@@ -46,8 +46,19 @@
     const grid=sheet.querySelector('.mobile-more-grid');if(!grid)return;
     const button=document.createElement('button');button.type='button';button.className='mobile-more-item mobile-update-entry'+(seen()?' seen':'');button.innerHTML=`<span>${bell}</span><div><strong>Wat is nieuw</strong><small>Bekijk de laatste updates</small></div><i class="updates-dot" aria-hidden="true"></i>`;button.onclick=()=>{document.querySelector('#mobileMoreLayer')?.classList.remove('show');document.body.style.overflow='';open()};grid.appendChild(button);
   }
-  const observer=new MutationObserver(()=>{ensureDesktopTrigger();injectMobile()});
-  const start=()=>{ensureDesktopTrigger();ensureLayer();injectMobile();observer.observe(document.body,{childList:true,subtree:true})};
+  function timeGreeting(){
+    const hour=new Date().getHours();
+    if(hour<12)return 'Goedemorgen';
+    if(hour<18)return 'Goedemiddag';
+    return 'Goedenavond';
+  }
+  function syncDashboardGreeting(){
+    document.querySelectorAll('.dashboard-hero-band h2').forEach(heading=>{
+      if(/Goedemorgen|Goedemiddag|Goedenavond/.test(heading.textContent||''))heading.textContent=`${timeGreeting()}, Sheling.`;
+    });
+  }
+  const observer=new MutationObserver(()=>{ensureDesktopTrigger();injectMobile();syncDashboardGreeting()});
+  const start=()=>{ensureDesktopTrigger();ensureLayer();injectMobile();syncDashboardGreeting();observer.observe(document.body,{childList:true,subtree:true});setInterval(syncDashboardGreeting,60000)};
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.updates-layer')?.classList.contains('open'))close()});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
   window.LynqUpdates={open};

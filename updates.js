@@ -53,8 +53,9 @@
     return 'Goedenavond';
   }
   function syncDashboardGreeting(){
+    const desired=`${timeGreeting()}, Sheling.`;
     document.querySelectorAll('.dashboard-hero-band h2').forEach(heading=>{
-      if(/Goedemorgen|Goedemiddag|Goedenavond/.test(heading.textContent||''))heading.textContent=`${timeGreeting()}, Sheling.`;
+      if(/Goedemorgen|Goedemiddag|Goedenavond/.test(heading.textContent||'') && heading.textContent!==desired)heading.textContent=desired;
     });
   }
   const observer=new MutationObserver(()=>{ensureDesktopTrigger();injectMobile();syncDashboardGreeting()});

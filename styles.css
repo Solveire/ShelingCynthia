@@ -632,3 +632,23 @@ body:not(.workspace-sheling) .content-client-link .avatar-square,
 body:not(.workspace-sheling) .oa-avatar,
 body:not(.workspace-sheling) .oa-result-avatar{display:none}
 body:not(.workspace-sheling) .oa-dossier-identity .oa-status{margin-left:0}
+
+/* Grouped customer navigation replaces the wide tab strip in LYNQ. */
+.client-group-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:22px 0;position:relative;z-index:25}
+.client-nav-group{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:10px;transition:border-color .16s,background .16s}
+.client-nav-group.active{border-color:var(--wine);background:var(--accent-soft)}
+.client-nav-group summary{display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none;padding:13px 16px;min-height:69px}
+.client-nav-group summary::-webkit-details-marker{display:none}
+.client-group-icon{width:32px;height:32px;display:grid;place-items:center;background:var(--soft,#f5f6f5);border:1px solid var(--line);border-radius:8px;color:var(--muted);flex:0 0 auto}
+.client-nav-group.active .client-group-icon{background:#fff;color:var(--wine)}
+.client-group-icon svg{height:17px;width:17px;stroke:currentColor;fill:none;stroke-width:1.6}
+.client-group-copy{flex:1;min-width:0;display:grid;gap:3px}.client-group-copy small{font-size:11px;color:var(--muted);font-weight:400}.client-group-copy strong{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.client-nav-group.active .client-group-copy strong{color:var(--wine)}
+.client-group-chevron{width:17px;height:17px;fill:none;stroke:var(--muted);stroke-width:1.5;flex:0 0 auto;transition:transform .16s}.client-nav-group[open] .client-group-chevron{transform:rotate(180deg)}
+.client-group-menu{position:absolute;top:calc(100% + 7px);left:0;right:0;min-width:210px;padding:6px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 35px rgba(30,22,27,.1);z-index:70}
+.client-group-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:none;border-radius:7px;padding:11px 12px;color:var(--ink);font-size:13px;line-height:1.5}
+.client-group-menu button:hover{background:var(--soft,#f5f6f5)}.client-group-menu button.active{background:var(--accent-soft);color:var(--wine)}.client-group-menu button>small{margin-left:auto;font-size:11px;background:var(--soft,#f5f6f5);padding:2px 6px;border-radius:4px}.client-menu-check{margin-left:auto;font-size:13px}.client-nav-group summary:focus-visible,.client-group-menu button:focus-visible{outline:2px solid var(--wine);outline-offset:3px}
+.oa-dossier-actions .oa-delete-lead{margin-left:auto;color:var(--danger);border-color:var(--line);background:#fff}.oa-dossier-actions .oa-delete-lead:hover{background:var(--danger-bg)}
+@media(max-width:850px){.client-group-nav{gap:8px}.client-nav-group summary{padding:11px 12px;gap:9px}.client-group-icon{display:none}}
+@media(max-width:540px){.client-group-nav{grid-template-columns:1fr;gap:8px;padding:16px 0}.client-nav-group summary{min-height:56px;padding:10px 13px}.client-group-icon{display:grid}.client-group-copy{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:10px}.client-group-copy small{font-size:12px}.client-group-copy strong{text-align:right;font-size:12px}.client-group-menu{min-width:0;position:static;margin:0 6px 6px;border:0;box-shadow:none;padding:3px}.client-nav-group[open]{border-color:var(--wine)}.oa-dossier-actions .oa-delete-lead{margin-left:0;flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.client-nav-group,.client-group-chevron{transition:none}}

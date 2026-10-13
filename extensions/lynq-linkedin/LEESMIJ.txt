@@ -1,4 +1,4 @@
-LYNQ LinkedIn Import — versie 1.0
+LYNQ LinkedIn Import — versie 1.0.1
 
 INSTALLEREN OP COMPUTER
 1. Pak LYNQ-LinkedIn-Import.zip uit. Bewaar de uitgepakte map op je computer.

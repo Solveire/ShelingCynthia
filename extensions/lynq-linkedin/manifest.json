@@ -1,9 +1,17 @@
 {
   "manifest_version": 3,
   "name": "LYNQ LinkedIn Import",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Voeg geladen LinkedIn-zoekresultaten toe aan Outreach in LYNQ.",
-  "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["https://shelingcynthia.pages.dev/*"],
-  "action": {"default_title": "Toevoegen aan LYNQ", "default_popup": "popup.html"}
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://shelingcynthia.pages.dev/*"
+  ],
+  "action": {
+    "default_title": "Toevoegen aan LYNQ",
+    "default_popup": "popup.html"
+  }
 }

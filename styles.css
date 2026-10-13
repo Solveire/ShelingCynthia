@@ -642,7 +642,7 @@ body:not(.workspace-sheling) .oa-dossier-identity .oa-status{margin-left:0}
 .client-rail-mobile-toggle{display:none}
 .client-rail-groups{display:flex;flex-direction:column;gap:22px}
 .client-rail-group{display:flex;flex-direction:column;gap:3px}
-.client-rail-label{display:block;font-size:10px;line-height:1.6;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);padding:0 10px;margin-bottom:6px;font-weight:500}
+.client-rail-label{display:block;font-size:11px;line-height:1.6;letter-spacing:.055em;text-transform:uppercase;color:var(--ink-2);padding:0 10px;margin-bottom:7px;font-weight:650}
 .client-rail-link{position:relative;display:flex;align-items:center;gap:8px;width:100%;border:0;background:transparent;color:var(--muted);text-align:left;border-radius:7px;padding:10px 11px;min-height:40px;font-size:12px;font-weight:400;line-height:1.5;transition:background .16s,color .16s}
 .client-rail-link:hover{background:var(--soft,#f6f7f6);color:var(--ink)}
 .client-rail-link.active{background:var(--accent-soft);color:var(--wine);font-weight:500}

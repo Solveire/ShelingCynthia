@@ -1,0 +1,36 @@
+LYNQ LinkedIn Import — versie 1.0
+
+INSTALLEREN OP COMPUTER
+1. Pak LYNQ-LinkedIn-Import.zip uit. Bewaar de uitgepakte map op je computer.
+2. Open Chrome en typ chrome://extensions in de adresbalk.
+   Voor Edge: edge://extensions.
+3. Zet Ontwikkelaarsmodus aan.
+4. Klik op Uitgepakte extensie laden / Load unpacked.
+5. Kies de map LYNQ-LinkedIn-Import waarin manifest.json staat.
+6. Klik op het puzzelicoon in de browser en pin LYNQ LinkedIn Import.
+
+GEBRUIKEN
+1. Open https://shelingcynthia.pages.dev/ en log in op LYNQ.
+   Wacht tot bovenaan 'Database verbonden' staat.
+2. Open LinkedIn in een ander tabblad van dezelfde browser.
+3. Zoek personen en kies de gewenste filters. De adresbalk moet bevatten:
+   https://www.linkedin.com/search/results/people/
+4. Scroll door de resultaten zodat de personen geladen zijn.
+5. Klik op het extensie-icoon en op Toevoegen aan LYNQ.
+6. Het CRM opent een importvoorbeeld. Controleer de profielen en klik op
+   Leads toevoegen. Dubbele profiel-links worden overgeslagen.
+7. Open een lead en klik op Open LinkedIn-profiel om zelf contact te leggen.
+
+Volgende pagina? Open die zelf in LinkedIn en herhaal stap 4-6.
+Er worden maximaal 100 geladen profielen per klik gelezen.
+
+Deze eerste versie werkt op computers met Chrome of Edge, niet op iPhone.
+Er is geen Apify-account of betaald zoekabonnement nodig. De extensie leest
+alleen de geopende pagina nadat je op de knop klikt. Ze vraagt geen cookies,
+wachtwoord of LinkedIn-sessietoken, en verstuurt geen LinkedIn-berichten.
+De CRM gebruikt de bestaande login en databasekoppeling.
+
+LinkedIn kan de paginaopbouw wijzigen; dan moet de extensie worden aangepast.
+De werking is getest met voorbeeldpagina's, niet met jouw ingelogde LinkedIn.
+
+Built by Solveire — https://www.solveire.nl

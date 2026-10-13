@@ -4,6 +4,7 @@
   let syncTimer = null;
   let syncing = false;
   let pending = false;
+  let ready = false;
 
   function token(){ return window.ShelingAuth?.getToken?.() || ''; }
   function setStatus(text){ const el=document.querySelector('#saveStatus'); if(el){el.hidden=false;el.textContent=text;} }
@@ -80,16 +81,16 @@
         if(typeof ensureWorkspaceExtras==='function') ensureWorkspaceExtras();
         if(typeof renderNav==='function') renderNav();
         if(typeof render==='function') render();
-        setStatus('Database verbonden');
+        ready=true;setStatus('Database verbonden');
       } else if(localHasData){
         if(!localStorage.getItem(MIGRATION_KEY)) localStorage.setItem(`${STORAGE_KEY}-pre-backend-backup`,JSON.stringify(data));
         await api('/api/state',{method:'PUT',body:JSON.stringify(snapshot())});
         localStorage.setItem(MIGRATION_KEY,new Date().toISOString());
-        setStatus('Database verbonden · lokale gegevens overgezet');
-      } else setStatus('Database verbonden');
+        ready=true;setStatus('Database verbonden · lokale gegevens overgezet');
+      } else {ready=true;setStatus('Database verbonden');}
     }catch(err){
       console.error('Backend initial load failed',err);
-      if(token()) setStatus('Offline modus · lokaal opgeslagen');
+      ready=false;if(token()) setStatus('Offline modus · lokaal opgeslagen');
     }
   }
 
@@ -100,7 +101,8 @@
   const originalApplySubColor = applySubColor;
   applySubColor = function(hex,save=true){ const ok=originalApplySubColor(hex,save); if(ok && save) schedulePush(250); return ok; };
 
-  window.LynqBackend={ sync:pushNow, reload:firstLoad, status:()=>({api:API_BASE,authenticated:!!token(),theme:currentTheme()}) };
+  window.LynqBackend={ sync:pushNow, reload:firstLoad, status:()=>({api:API_BASE,authenticated:!!token(),ready,theme:currentTheme()}) };
   window.addEventListener('sheling-auth-ready',firstLoad);
   if(token()) firstLoad();
 })();
+

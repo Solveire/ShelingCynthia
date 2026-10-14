@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=client-rail-20261013">
+<link rel="stylesheet" href="styles.css?v=quiet-header-20261014">
 <link rel="stylesheet" href="proposals.css?v=complete-20260904">
 <link rel="stylesheet" href="auth.css?v=login-20260907">
 <link rel="stylesheet" href="client-tools.css?v=client-files-20260907b">
@@ -54,16 +54,14 @@
   <main class="main-shell">
     <header class="topbar">
       <button class="mobile-toggle" id="mobileToggle" aria-label="Menu openen of sluiten" aria-controls="sidebar">☰</button>
-      <div class="global-search"><span class="search-icon">⌕</span><input aria-label="Zoek klanten of diensten" id="globalSearch" placeholder="Zoek klanten of diensten..."><span class="kbd">⌘ K</span></div>
+      <div class="global-search"><span class="search-icon">⌕</span><input aria-label="Zoek klanten of diensten" id="globalSearch" placeholder="Zoek klanten of diensten..."></div>
       <div class="topbar-actions">
         <button class="icon-plain" id="appGrid" title="Apps">⋮⋮</button>
         <div class="topbar-account">
           <button class="topbar-link" id="exportData">Gegevens</button>
           <button class="topbar-link" id="logoutBtn">Uitloggen</button>
         </div>
-        <button class="primary top-add" id="topAdd">+ Nieuwe klant</button>
       </div>
-      <span id="saveStatus" hidden>Opgeslagen</span>
     </header>
     <div class="main-scroll" id="mainScroll"><div id="content"></div></div>
   </main>
@@ -74,9 +72,9 @@
 <div class="toast" id="toast"></div>
 <input id="importFile" type="file" accept="application/json" hidden>
 <script src="proposals.js?v=complete-20260904"></script>
-<script src="app.js?v=client-rail-20261013"></script>
+<script src="app.js?v=quiet-header-20261014"></script>
 <script src="auth.js?v=login-20260907"></script>
-<script src="backend-sync.js?v=browser-ready-20261013"></script>
+<script src="backend-sync.js?v=settings-status-20261014"></script>
 <script src="client-tools.js?v=client-files-20260907"></script>
 <script src="csv-import-label.js?v=csv-import-20260908"></script>
 <script src="proposal-print-fix.js?v=cover-print-20260907"></script>

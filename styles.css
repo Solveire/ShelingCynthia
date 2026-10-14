@@ -665,3 +665,7 @@ body:not(.workspace-sheling) .oa-dossier-identity .oa-status{margin-left:0}
 .solveire-credit strong{font-weight:500;color:var(--muted)}
 .solveire-credit a:hover,.solveire-credit a:hover strong{color:var(--wine)}
 .solveire-credit a:focus-visible{outline:2px solid var(--wine);outline-offset:4px;border-radius:3px}
+
+/* Keep global navigation quiet; sync details live in settings. */
+.topbar .global-search{width:min(420px,48vw);background:#fff;border-color:#e9e4e7}.topbar .global-search input{font-size:14px}.topbar .topbar-actions{gap:14px}.topbar .topbar-link{font-size:12px}.data-modern-card #databaseSyncStatus{font-size:13px;line-height:1.6;color:var(--muted)}
+@media(max-width:650px){.topbar .global-search{width:auto;flex:1}.topbar .topbar-actions{gap:8px}.topbar .global-search input{font-size:13px}}

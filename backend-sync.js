@@ -5,9 +5,10 @@
   let syncing = false;
   let pending = false;
   let ready = false;
+  let syncMessage = 'Database verbinden…';
 
   function token(){ return window.ShelingAuth?.getToken?.() || ''; }
-  function setStatus(text){ const el=document.querySelector('#saveStatus'); if(el){el.hidden=false;el.textContent=text;} }
+  function setStatus(text){ syncMessage=text; const el=document.querySelector('#databaseSyncStatus'); if(el)el.textContent=text; }
   function currentTheme(){
     return {
       primary: localStorage.getItem(THEME_KEY) || DEFAULT_ACCENT,
@@ -101,7 +102,7 @@
   const originalApplySubColor = applySubColor;
   applySubColor = function(hex,save=true){ const ok=originalApplySubColor(hex,save); if(ok && save) schedulePush(250); return ok; };
 
-  window.LynqBackend={ sync:pushNow, reload:firstLoad, status:()=>({api:API_BASE,authenticated:!!token(),ready,theme:currentTheme()}) };
+  window.LynqBackend={ sync:pushNow, reload:firstLoad, status:()=>({api:API_BASE,authenticated:!!token(),ready,message:syncMessage,theme:currentTheme()}) };
   window.addEventListener('sheling-auth-ready',firstLoad);
   if(token()) firstLoad();
 })();

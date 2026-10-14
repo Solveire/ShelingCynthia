@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="mobile.css?v=mobile-app-20260908">
 <link rel="stylesheet" href="lynq-ai.css?v=ai-20260908">
 <link rel="stylesheet" href="updates.css?v=updates-20260908">
-<link rel="stylesheet" href="outreach.css?v=status-tabs-20261014">
+<link rel="stylesheet" href="outreach.css?v=reminder-bell-20261014">
 </head>
 <body>
 <div id="app" class="app-shell">
@@ -61,6 +61,11 @@
           <button class="topbar-link" id="exportData">Gegevens</button>
           <button class="topbar-link" id="logoutBtn">Uitloggen</button>
         </div>
+        <div class="oa-bell" id="oaBell" hidden>
+          <button type="button" class="oa-bell-button" id="oaBellButton" aria-label="Meldingen" aria-haspopup="dialog" aria-expanded="false" aria-controls="oaBellPanel"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="oa-bell-count" id="oaBellCount" hidden>0</span></button>
+          <div class="oa-bell-panel" id="oaBellPanel" role="dialog" aria-labelledby="oaBellTitle" hidden></div>
+        </div>
+
       </div>
     </header>
     <div class="main-scroll" id="mainScroll"><div id="content"></div></div>
@@ -81,7 +86,7 @@
 <script src="mobile.js?v=mobile-app-20260908"></script>
 <script src="updates.js?v=updates-20260908"></script>
 <script src="lynq-ai.js?v=ai-20260908"></script>
-<script src="outreach.js?v=status-tabs-20261014"></script>
+<script src="outreach.js?v=reminder-bell-20261014"></script>
 </body>
 </html>
 
